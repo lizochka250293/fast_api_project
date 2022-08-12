@@ -28,3 +28,9 @@ class GetPost(BaseModel):
     user: Users
     title: str
     description: str
+
+
+class GetUserPosts(BaseModel):
+    id: int
+    title: str
+    description: str
