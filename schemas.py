@@ -23,10 +23,10 @@ class Users(BaseModel):
     password: str = Field(..., max_length=20, min_length=8,
         description='The name of the article should not be less than 2 and more than 20 characters')
 
-    @validator('username')
-    def check_username(cls, v):
-        if v.isalpha():
-            return v
+    # @validator('username')
+    # def check_username(cls, v):
+    #     if v.isalpha():
+    #         return v
 
     @validator('email')
     def check_email(cls, v):
@@ -79,7 +79,7 @@ class GetUserPosts(BaseModel):
     title: str
     description: str
 
-
 class GetUser(BaseModel):
     id: int
     username: str
+    email: str
