@@ -1,20 +1,7 @@
 from typing import List
-from typing import Union
-
-from fastapi import Form
-from pydantic import BaseModel, Field, validator, EmailStr
+from pydantic import BaseModel, Field, validator
 
 from forbidden_words import forbidden_words
-
-
-class GetUsername(BaseModel):
-    username: str = Field(..., max_length=20, min_length=2,
-                          description='The name of the article should not be less than 2 and more than 20 characters')
-
-    @classmethod
-    def as_form(cls, username: str = Form(...)):
-        return cls(username=username)
-
 
 
 class Users(BaseModel):
@@ -75,16 +62,10 @@ class UploadPost(BaseModel):
 
 
 class GetPost(BaseModel):
-    user: Users
-    title: str
-    description: str
-
-
-class GetUserPosts(BaseModel):
-    username: str
     id: int
     title: str
     description: str
+
 
 
 class GetUser(BaseModel):
@@ -96,11 +77,6 @@ class GetUser(BaseModel):
 class User(BaseModel):
     username: str
 
-
-
-class Token(BaseModel):
-    id: int
-    token: str
 
 
 class TokenPayload(BaseModel):
