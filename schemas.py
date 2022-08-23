@@ -1,32 +1,30 @@
 from typing import List
 from typing import Union
+
 from fastapi import Form
+from pydantic import BaseModel, Field, validator, EmailStr
 
 from forbidden_words import forbidden_words
-from pydantic import BaseModel, Field, validator
+
 
 class GetUsername(BaseModel):
     username: str = Field(..., max_length=20, min_length=2,
-                       description='The name of the article should not be less than 2 and more than 20 characters')
+                          description='The name of the article should not be less than 2 and more than 20 characters')
 
     @classmethod
     def as_form(cls, username: str = Form(...)):
         return cls(username=username)
 
 
-# contains '@' and '.'
+
 class Users(BaseModel):
     username: str = Field(..., max_length=20, min_length=2,
-        description='The username of the article should not be less than 2 and more than 20 characters and and contain only letters')
+                          description='The username of the article should not be less than 2 and more than 20 characters and and contain only letters')
     email: str = Field(..., max_length=50, min_length=2,
-        description='The name of the article should not be less than 2 and more than 50 characters and contain @')
+                       description='The name of the article should not be less than 2 and more than 50 characters and contain @')
     password: str = Field(..., max_length=20, min_length=8,
-        description='The name of the article should not be less than 2 and more than 20 characters')
+                          description='The name of the article should not be less than 2 and more than 20 characters')
 
-    # @validator('username')
-    # def check_username(cls, v):
-    #     if v.isalpha():
-    #         return v
 
     @validator('email')
     def check_email(cls, v):
@@ -35,7 +33,8 @@ class Users(BaseModel):
 
     @validator('password')
     def check_password(cls, v):
-        punctuation_marks = ['.', ',', ':', ';', '"', '{', '}', '[', ']', '!', '@', '#', '<', '>', '(', ')', '*', '^', '%', '$', '&', '?', '№']
+        punctuation_marks = ['.', ',', ':', ';', '"', '{', '}', '[', ']', '!', '@', '#', '<', '>', '(', ')', '*', '^',
+                             '%', '$', '&', '?', '№']
         cur_list = []
         if not v.islower():
             for i in v:
@@ -49,20 +48,23 @@ class Users(BaseModel):
         if len(cur_list) == 2:
             return v
 
+
 class Tags(BaseModel):
+    id: int
     tags: str
+
 
 class UploadPost(BaseModel):
     title: str = Field(..., max_length=50, min_length=3,
                        description='The title of the article should not be less than 3 and more than 50 characters')
     description: str = Field(..., max_length=1500, min_length=3,
-                       description='The description of the article should not be less than 3 and more than 1500 characters')
+                             description='The description of the article should not be less than 3 and more than 1500 characters')
 
-    tags: List[Tags] = None
+    tags: List[str] = None
 
     username: str
 
-    id: int
+    id: int = None
 
     @validator('description', 'title')
     def check_description(cls, v):
@@ -84,24 +86,24 @@ class GetUserPosts(BaseModel):
     title: str
     description: str
 
+
 class GetUser(BaseModel):
     id: int
     username: str
     email: str
 
-class Token(BaseModel):
-    access_token: str
-
-
-class TokenData(BaseModel):
-    username: Union[str, None] = None
-
 
 class User(BaseModel):
     username: str
-    email: Union[str, None] = None
-    disabled: Union[bool, None] = None
 
 
-class UserInDB(User):
-    hashed_password: str
+
+class Token(BaseModel):
+    id: int
+    token: str
+
+
+class TokenPayload(BaseModel):
+    user_id: int = None
+
+
