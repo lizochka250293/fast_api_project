@@ -6,7 +6,8 @@ Python 3.10, FastApi, sqlalchemy
 Подробный перечень используемых библиотек находятся в файле requirements.txt
 
 ## Функционал
- - проложение по выводу т написанию постов
+ - возможность регистрации
+ - возможность написания и просмотра постов
 
 ## Инструкция по развертыванию
 
@@ -16,4 +17,4 @@ Python 3.10, FastApi, sqlalchemy
     pip install -r requirements.txt
 
 ##### Запустить приложение
-    unicorn main: app -reload
+    uvicorn main: app
